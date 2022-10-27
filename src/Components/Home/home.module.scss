@@ -1,0 +1,19 @@
+.title {
+	margin-bottom: 16px;
+	font-weight: 700;
+	font-size: 26px;
+	line-height: 32px;
+}
+
+p {
+	color: #000000;
+	
+	&:not(:last-child) {
+		margin-bottom: 24px;
+	}
+}
+
+.link {
+	text-decoration: underline;
+	color: #002BC5;
+}
