@@ -1,4 +1,5 @@
 type Nullable<T> = T | null;
+
 type DaDataAddressBeltwayHit = 'IN_MKAD' | 'OUT_MKAD' | 'IN_KAD' | 'OUT_KAD';
 
 interface DaDataAddressMetro {
