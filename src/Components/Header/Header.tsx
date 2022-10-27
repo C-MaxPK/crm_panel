@@ -3,7 +3,7 @@ import AvatarImg from './avatar.svg';
 import styles from './header.module.scss';
 
 const Header = (): JSX.Element => {
-
+	
 	return (
 		<header className={styles.header}>
 			<div className={styles.logo}>

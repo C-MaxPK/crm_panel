@@ -1,41 +1,31 @@
-import { FormEvent, useState } from 'react';
-import { DaDataSuggestion } from './types';
+import { FormEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { clearDaData, getDaDataAddress, selectDaData } from './searchSlice';
 import SearchImg from './search.svg';
 import styles from './search.module.scss';
 
-interface IResponse {
-	suggestions: DaDataSuggestion[];
-}
-
 const Search = (): JSX.Element => {
 	const [ inputValue, setInputValue ] = useState<string>('');
-	const [ daData, setDaData ] = useState<DaDataSuggestion[] | null>(null);
 	const [ errorFlg, setErrorFlg ] = useState<boolean>(false);
 
-	const url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
-	const token = "6fbad274991f4f4a9543cd3198f4c5a93c73666d";
+	const dispatch = useAppDispatch();
+	const daData = useAppSelector(selectDaData);
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearDaData());
+		}
+	}, [dispatch]);
 
 	const searchAddress = (e: FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
 		setInputValue('');
-		setDaData(null);
-
+		
 		if (inputValue.length >= 3) {
+			dispatch(getDaDataAddress(inputValue));
 			setErrorFlg(false);
-			fetch(url, {
-				method: "POST",
-				mode: "cors",
-				headers: {
-					"Content-Type": "application/json",
-					"Accept": "application/json",
-					"Authorization": "Token " + token
-				},
-				body: JSON.stringify({query: inputValue, count: 12})
-			})
-				.then(response => response.json() as Promise<IResponse>)
-				.then(result => setDaData(result.suggestions))
-				.catch(error => console.log("error", error.message));
 		} else {
+			dispatch(clearDaData());
 			setErrorFlg(true);
 		}
 	};
